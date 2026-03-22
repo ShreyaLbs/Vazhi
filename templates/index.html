@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vazhi 🌿 - Your Path</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #064e3b;
+            --bg-light: #ecfdf5;
+            --primary: #10b981;
+            --accent: #fbbf24;
+            --text-dark: #022c22;
+            --text-light: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-image: radial-gradient(#10b981 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0;
+            opacity: 0.95;
+            /* Based on user request, large typography as base */
+            font-size: 18px; 
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            max-height: 850px;
+            background: #ffffff;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        
+        @media (min-width: 481px) {
+            .phone-frame {
+                height: 94vh;
+                border-radius: 40px;
+                border: 8px solid #022c22;
+                overflow: hidden;
+            }
+        }
+
+        /* Header */
+        .app-header {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            padding: 24px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .app-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-switch {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: background 0.2s;
+        }
+        
+        .lang-switch:active { background: rgba(255,255,255,0.4); }
+
+        /* The Path / Timeline Chat */
+        .path-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 24px;
+            position: relative;
+            scroll-behavior: smooth;
+        }
+
+        .path-container::-webkit-scrollbar { width: 0; }
+
+        /* The vertical line representing the 'Path' */
+        .path-container::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #d1fae5;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        .node-wrapper {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 40px;
+            z-index: 1;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .node-wrapper.bot { align-items: flex-start; }
+        .node-wrapper.user { align-items: flex-end; }
+
+        /* The circular node on the path */
+        .node-point {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 0 4px #ffffff, 0 0 0 6px #d1fae5;
+            z-index: 2;
+        }
+
+        .node-wrapper.user .node-point { border-color: var(--accent); }
+
+        .bubble {
+            max-width: 42%;
+            background: white;
+            padding: 16px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            position: relative;
+            font-size: 17px;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .node-wrapper.bot .bubble { border-top-left-radius: 4px; border: 2px solid #f1f5f9; }
+        .node-wrapper.user .bubble { 
+            background: var(--bg-dark); 
+            color: white; 
+            border-top-right-radius: 4px; 
+            box-shadow: 0 8px 20px rgba(6, 78, 59, 0.3);
+        }
+
+        /* 6 Massive Grid Buttons */
+        .quick-topics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 5;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .topic-btn {
+            background: white;
+            border: 3px solid #e2e8f0;
+            padding: 18px 10px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            text-align: center;
+        }
+
+        .topic-btn span.emoji { font-size: 32px; }
+        .topic-btn:active { transform: scale(0.96); }
+        .topic-btn:hover { border-color: var(--primary); box-shadow: 0 8px 15px rgba(16, 185, 129, 0.15); }
+
+        /* Typewriter Input Zone */
+        .typewriter-zone {
+            background: white;
+            padding: 30px 24px 24px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.02);
+        }
+
+        .typewriter-zone::before {
+            content: "What are you looking for?";
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: #78350f;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(251, 191, 36, 0.3);
+        }
+
+        .typing-box {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 8px 8px 8px 20px;
+            transition: all 0.3s;
+        }
+
+        .typing-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px #d1fae5;
+            background: white;
+        }
+
+        #scheme-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 18px;
+            font-family: inherit;
+            outline: none;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        
+        #scheme-input::placeholder { color: #94a3b8; font-weight: 500; }
+
+        .submit-btn {
+            background: var(--bg-dark);
+            color: white;
+            border: none;
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .submit-btn:focus, .submit-btn:hover { background: #022c22; transform: scale(1.05); }
+
+        /* Scheme Cards Rendered by Backend */
+        .scheme-card {
+            background: #f0fdf4;
+            border: 2px solid #a7f3d0;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 14px;
+            width: 100%;
+            min-width: 260px;
+            box-shadow: 0 4px 12px rgba(167, 243, 208, 0.2);
+        }
+        
+        .scheme-card .card-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .scheme-card .card-header .match-badge {
+            background: var(--accent);
+            color: #78350f;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .scheme-card h4 { color: #064e3b; margin-top: 10px; margin-bottom: 10px; font-size: 20px; font-family: 'Outfit', sans-serif;}
+        .scheme-card p { font-size: 16px; color: #475569; margin-bottom: 16px; }
+        
+        /* User Requirement: Documents Checklist Resurrected */
+        .doc-checklist {
+            display: block;
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        .doc-checklist strong { display: block; margin-bottom: 12px; font-size: 15px; color: #064e3b; letter-spacing: 0.5px; }
+        .doc-checklist label { display: flex; align-items: center; gap: 10px; font-size: 15px; margin-bottom: 10px; cursor: pointer; color: #334155; font-weight: 600;}
+        .doc-checklist input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--primary); cursor: pointer; }
+
+        /* Simplification */
+        .tags .tag { display: none; } 
+        
+        .card-actions { display: flex; gap: 10px; margin-top: 12px;}
+        .apply-btn { flex: 1; text-align: center; background: #10b981; color: white; text-decoration: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 16px; transition: background 0.2s;}
+        .apply-btn:hover { background: #059669; }
+        .wa-btn { background: #25D366; width: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; transition: transform 0.2s; }
+        .wa-btn:hover { transform: scale(1.05); }
+
+        #typing-indicator { display: none; }
+        .pulse { display: flex; gap: 6px; padding: 16px; justify-content: center;}
+        .pulse span { width: 8px; height: 8px; background: #94a3b8; border-radius: 50%; animation: p 0.8s infinite alternate; }
+        .pulse span:nth-child(2) { animation-delay: 0.2s; } .pulse span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes p { from { transform: translateY(0); opacity:0.4;} to { transform: translateY(-4px); opacity:1;} }
+    </style>
+</head>
+<body>
+
+<div class="phone-frame">
+    <div class="app-header">
+        <div class="app-title">🌿 Vazhi</div>
+        <button class="lang-switch" onclick="toggleLang()">അ | EN </button>
+    </div>
+
+    <!-- The actual Path/Timeline layout -->
+    <div class="path-container" id="path">
+        
+        <div class="node-wrapper bot" id="welcome-node">
+            <div class="node-point"></div>
+            <div class="bubble" id="welcome-msg">
+                Namaskaram! 🙏<br><br>Welcome to your path to government schemes. Tell me a bit about what kind of support you need.
+            </div>
+        </div>
+        
+        <!-- 6 Massive Buttons explicitly inside the path area underneath the welcome message -->
+        <div class="quick-topics" id="quick-topics">
+            <button class="topic-btn" onclick="sendTopic('Education & Schemes')"><span class="emoji">🎓</span><span class="btn-text">Education</span></button>
+            <button class="topic-btn" onclick="sendTopic('Health & Medical')"><span class="emoji">🏥</span><span class="btn-text">Health</span></button>
+            <button class="topic-btn" onclick="sendTopic('Housing')"><span class="emoji">🏠</span><span class="btn-text">Housing</span></button>
+            <button class="topic-btn" onclick="sendTopic('Farmer')"><span class="emoji">🌾</span><span class="btn-text">Farmer</span></button>
+            <button class="topic-btn" onclick="sendTopic('Widow Pension')"><span class="emoji">👩‍👧</span><span class="btn-text">Widow</span></button>
+            <button class="topic-btn" onclick="sendTopic('Children & Orphans')"><span class="emoji">👶</span><span class="btn-text">Children</span></button>
+        </div>
+
+        <div class="node-wrapper bot" id="typing-indicator">
+            <div class="node-point"></div>
+            <div class="bubble pulse">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Typing Feature -->
+    <div class="typewriter-zone">
+        <div class="typing-box">
+            <input type="text" id="scheme-input" placeholder="Type your scheme request..." autocomplete="off" onkeydown="if(event.key === 'Enter') sendRequest()" />
+            <button class="submit-btn" onclick="sendRequest()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let isMalayalam = false;
+    const langData = {
+        welcome: {
+            eng: "Namaskaram! 🙏<br><br>Welcome to your path to government schemes. Tell me a bit about what kind of support you need.",
+            mal: "നമസ്കാരം! 🙏<br><br>സർക്കാർ പദ്ധതികളിലേക്കുള്ള നിങ്ങളുടെ വഴിയിലേക്ക് സ്വാഗതം. നിങ്ങൾക്ക് എന്ത് സഹായമാണ് വേണ്ടത്?"
+        },
+        buttons: [
+            {eng: "Education", mal: "വിദ്യാഭ്യാസം"},
+            {eng: "Health", mal: "ആരോഗ്യം"},
+            {eng: "Housing", mal: "ഭവനം"},
+            {eng: "Farmer", mal: "കർഷകൻ"},
+            {eng: "Widow", mal: "വിധവ"},
+            {eng: "Children", mal: "കുട്ടികൾ"}
+        ],
+        placeholder: { eng: "Type your scheme request...", mal: "നിങ്ങളുടെ ആവശ്യം ടൈപ്പ് ചെയ്യുക..." }
+    };
+
+    function toggleLang() {
+        isMalayalam = !isMalayalam;
+        document.getElementById('welcome-msg').innerHTML = isMalayalam ? langData.welcome.mal : langData.welcome.eng;
+        document.getElementById('scheme-input').placeholder = isMalayalam ? langData.placeholder.mal : langData.placeholder.eng;
+        
+        const btnTexts = document.querySelectorAll('.btn-text');
+        if(btnTexts.length > 0) {
+            btnTexts.forEach((span, index) => { span.innerText = isMalayalam ? langData.buttons[index].mal : langData.buttons[index].eng; });
+        }
+    }
+
+    function scrollToBottom() {
+        const path = document.getElementById("path");
+        setTimeout(() => path.scrollTop = path.scrollHeight, 100);
+    }
+    
+    function sendTopic(topicText) {
+        document.getElementById("scheme-input").value = topicText;
+        sendRequest();
+    }
+
+    function addNode(sender, text) {
+        const pathContainer = document.getElementById("path");
+        const typingInd = document.getElementById("typing-indicator");
+        
+        const node = document.createElement("div");
+        node.className = `node-wrapper ${sender}`;
+        node.innerHTML = `
+            <div class="node-point"></div>
+            <div class="bubble">${text}</div>
+        `;
+        
+        pathContainer.insertBefore(node, typingInd);
+        scrollToBottom();
+    }
+
+    async function sendRequest() {
+        const inputField = document.getElementById("scheme-input");
+        const message = inputField.value.trim();
+        if(!message) return;
+
+        addNode('user', message);
+        inputField.value = '';
+        inputField.focus();
+        
+        const topics = document.getElementById("quick-topics");
+        if(topics) topics.style.display = 'none';
+        
+        const typingInd = document.getElementById("typing-indicator");
+        typingInd.style.display = 'flex';
+        scrollToBottom();
+
+        try {
+            const res = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message, lang: isMalayalam ? 'mal' : 'eng' })
+            });
+            const data = await res.json();
+            
+            setTimeout(() => {
+                typingInd.style.display = 'none';
+                addNode('bot', data.response);
+            }, 1200);
+            
+        } catch(e) {
+            typingInd.style.display = 'none';
+            addNode('bot', 'Connection error. Please try again.');
+        }
+    }
+</script>
+
+</body>
+</html>

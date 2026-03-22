@@ -1,0 +1,44 @@
+{
+  "schemes": [
+    {
+      "name": "Vidyakiran Scholarship",
+      "description": "Financial aid for students from low-income families to support their education.",
+      "eligibility": ["student", "low-income", "scholarship", "education"],
+      "documents": ["Aadhaar Card", "Income Certificate", "School ID / Marklist", "Bank Passbook"],
+      "age_range": [10, 25],
+      "link": "https://kerala.gov.in"
+    },
+    {
+      "name": "Karunya Health Scheme",
+      "description": "Free medical treatment and financial assistance for BPL families in Kerala dealing with severe diseases.",
+      "eligibility": ["BPL", "health", "medical", "disease", "poor"],
+      "documents": ["Aadhaar Card", "Ration Card (BPL)", "Medical Report", "Doctor's Recommendation"],
+      "age_range": [0, 100],
+      "link": "https://kerala.gov.in"
+    },
+    {
+      "name": "LIFE Mission",
+      "description": "Comprehensive housing scheme providing secure and safe housing for the homeless and landless in Kerala.",
+      "eligibility": ["homeless", "housing", "BPL", "house", "shelter"],
+      "documents": ["Aadhaar Card", "Ration Card", "Landless Certificate", "Panchayat Application Approv."],
+      "age_range": [18, 100],
+      "link": "https://kerala.gov.in"
+    },
+    {
+      "name": "Snehapoorvam Scheme",
+      "description": "Financial support for orphans and vulnerable children living in families to ensure their uninterrupted education and well-being.",
+      "eligibility": ["orphan", "children", "student", "financial support"],
+      "documents": ["Aadhaar Card", "Death Certificate of Parents", "Income Certificate", "Head of Institution Cert"],
+      "age_range": [0, 21],
+      "link": "https://kerala.gov.in"
+    },
+    {
+      "name": "Widow Pension Scheme (Indira Gandhi National Widow Pension)",
+      "description": "Monthly financial assistance for widows living below the poverty line to support their livelihood.",
+      "eligibility": ["widow", "women", "pension", "BPL"],
+      "documents": ["Aadhaar Card", "Husband's Death Certificate", "Ration Card (BPL)", "Age Certificate"],
+      "age_range": [18, 100],
+      "link": "https://kerala.gov.in"
+    }
+  ]
+}
