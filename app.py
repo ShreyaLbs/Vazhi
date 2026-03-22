@@ -26,7 +26,7 @@ def find_schemes(user_message):
             
     # Sort by relevance
     matched_schemes.sort(key=lambda x: x[0], reverse=True)
-    return [s[1] for s in matched_schemes[:3]] # Return top 3 matches
+    return [s[1] for s in matched_schemes] # Return all matches
 
 @app.route("/")
 def home():
